@@ -55,14 +55,14 @@ Component({
 		lastMonthInfo: {
 			year: -1,
 			month: -1,
-			day: -1
+			list: []
 		},
 		
 		// 下一个月份的时间
 		nextMonthInfo: {
 			year: -1,
 			month: -1,
-			day: -1
+			list: []
 		}
 	},
 	
@@ -80,8 +80,14 @@ Component({
 	
 	// 一开始加载时获取当前的时间
 	attached() {
-		this.formatNowMonthData()
-		this.calculateResidualDays()
+		this.formatMonthData(this.data.beginShow)
+		this.calculateResidualDays(this.data.beginShow)
+		
+		// 计算上个月和下个月的数据
+		this.getLastMonth(this.data.beginShow)
+		this.getNextMonth(this.data.beginShow)
+		
+		console.log('输出当前的日历详情', this.data.beginShow, this.data.lastMonthInfo, this.data.nextMonthInfo)
 		
 		// 计算完成，重新渲染
 		this.setData({
@@ -102,50 +108,81 @@ Component({
 	 */
 	methods: {
 		// 获取本月的天数和1号是星期几
-		formatNowMonthData() {
+		formatMonthData(date) {
 			// 获取当前月份的天数
-			let value = dateUtil.getTotalDays(this.data.beginShow)
+			let value = dateUtil.getTotalDays(date)
 			for(let i = 1; i <= value; i++) {
-				this.data.beginShow.list.push({
+				date.list.push({
 					value: i,
 					type: 'cur'
 				})
 			}
 			
 			// 获取当前月份1号星期几
-			this.data.beginShow.firstDayWeek = dateUtil.getFirstDayWeek(this.data.beginShow)
+			date.firstDayWeek = dateUtil.getFirstDayWeek(date)
 		},
 		
 		// 根据当前的天数，计算上月残余天数和下月残余天数
-		calculateResidualDays() {
+		calculateResidualDays(date) {
 			// 计算上月残余天数,需要知道1号是星期几(个数)且上月最后一天是几号(起始数值)
 			let last_value = dateUtil.getTotalDays({
-				year: this.data.beginShow.year,
-				month: this.data.beginShow.month - 1
+				year: date.year,
+				month: date.month - 1
 			})
-			for(let i = 0; i < this.data.beginShow.firstDayWeek; i++) {
-				this.data.beginShow.list.unshift({
+			for(let i = 0; i < date.firstDayWeek; i++) {
+				date.list.unshift({
 					value: last_value - i,
 					type: 'last'
 				})
 			}
 			
 			// 计算下月残余天数,需要知道本月显示多少行
-			let total = Math.floor(this.data.beginShow.list.length / 7)
-			if( this.data.beginShow.list.length % 7 > 0) {
+			let total = Math.floor(date.list.length / 7)
+			if( date.list.length % 7 > 0) {
 				++ total
 			}
 			if(this.properties.fixRow) {
 				// 设置了每月固定显示6行
 				total = 6
 			}
-			let next_value = total * 7 - this.data.beginShow.list.length
+			let next_value = total * 7 - date.list.length
 			for(let i = 1; i <= next_value; i++) {
-				this.data.beginShow.list.push({
+				date.list.push({
 					value: i,
 					type: 'next'
 				})
 			}
+		},
+		
+		// 获取上个月的日期数据
+		getLastMonth(date) {
+			if(date.month === 1) {
+				this.data.lastMonthInfo.year = date.year - 1
+				this.data.lastMonthInfo.month = 12
+			} else {
+				this.data.lastMonthInfo.year = date.year
+				this.data.lastMonthInfo.month = date.month - 1
+			}
+			
+			// 计算上个月的详细情况
+			this.formatMonthData(this.data.lastMonthInfo)
+			this.calculateResidualDays(this.data.lastMonthInfo)
+		},
+		
+		// 计算下个月的日期数据
+		getNextMonth(date) {
+			if(date.month === 12) {
+				this.data.nextMonthInfo.year = date.year + 1
+				this.data.nextMonthInfo.month = 1
+			} else {
+				this.data.nextMonthInfo.year = date.year
+				this.data.nextMonthInfo.month = date.month + 1
+			}
+			
+			// 计算下个月的详细情况
+			this.formatMonthData(this.data.nextMonthInfo)
+			this.calculateResidualDays(this.data.nextMonthInfo)
 		}
+		
 	}
 })

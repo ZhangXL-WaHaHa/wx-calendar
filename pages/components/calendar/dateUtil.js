@@ -22,6 +22,10 @@ module.exports = {
 		
 		// 判断输入的时间有没有错
 		// 暂时不清楚年份范围
+		console.log('输出当前月份的天数', this.getTotalDays({
+			year: nowYear,
+			month: nowMonth
+		})
 		if(nowYear < 1997 || nowYear > 10000 || nowMonth < 1 || nowMonth > 12 || nowDay < 1 || nowDay < this.getTotalDays({
 			year: nowYear,
 			month: nowMonth

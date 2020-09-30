@@ -16,6 +16,6 @@
 	<van-popup 
 		round
 		show="{{ show }}" bind:close="onClose" position="bottom">
-		<calendar beginTime=""></calendar>
+		<calendar beginTime="2020-01-01"></calendar>
 	</van-popup>
 </view>
