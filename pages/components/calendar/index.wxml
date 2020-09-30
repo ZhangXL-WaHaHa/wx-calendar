@@ -1,0 +1,29 @@
+<!--pages/components/calendar/index.wxml-->
+<!-- 实现思路 -->
+<!-- 1.根据当前月份1号零时的时间戳和下个月1号零时的时间戳计算出本月份的天数 -->
+<!-- 2.根据getDay()函数计算出当前月份1号是星期几 -->
+<!-- 3.根据1号是周几计算出上个月的残余天数，根据第一行显示多少个本月数据，计算出最后一行显示多少个，从而得到下月的残余天数 -->
+<view class="calendar-container">
+	<!-- 日历开头 -->
+	<view>
+		<view wx:if="{{ showTitle }}" class="calendar-title">{{ title }}</view>
+		<!-- 副标题 -->
+		<view class="calnedar-subtitle-box">
+			<image src="../../assets/images/arrow-left.png" class="calendar-icon-next"></image>
+			<view class="calendar-subtitle">{{ subTitle }}</view>
+			<image src="../../assets/images/arrow-right.png" class="calendar-icon-last"></image>
+		</view>
+		<!-- 一周 -->
+		<view class="calendar-week-box">
+			<view wx:for="{{ weekList }}" wx:key="*this" class="calendar-week-item">
+				<view class="calendar-week-text">{{ item }}</view>
+			</view>
+		</view>
+	</view>
+	
+	<!-- 日历详情部分 -->
+	<!-- 可滑动 -->
+	<view class="">
+		
+	</view>
+</view>
