@@ -30,6 +30,8 @@
 					class="calendar-data-text {{item.type === 'cur' ? 'calendar-data-cur-text' : ''}}"
 					data-index="{{index}}" bindtap="selectDate"
 					style="background-color: {{index === beginShow.select ? selectBackground : ''}}">{{ item.value }}</view>
+<!--				设置显示的提示词语-->
+				<view class="calendar-data-tip" wx:if="{{item.text}}">{{item.text}}</view>
 			</view>
 		</view>
 	</view>

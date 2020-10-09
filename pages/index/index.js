@@ -10,6 +10,17 @@ Page({
 		canIUse: wx.canIUse('button.open-type.getUserInfo'),
 		
 		show: false,  //是否显示日历弹出框
+
+		showDataText: [
+			{
+				value: "2020-10-10",
+				text: '售'
+			},
+			{
+				value: '2020-10-9',
+				text: '售'
+			}
+		],  //日历上显示相关的提示
 	},
 	//事件处理函数
 	bindViewTap: function() {

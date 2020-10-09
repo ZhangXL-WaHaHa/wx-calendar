@@ -52,6 +52,10 @@
 	color: #999999;
 }
 
+.calendar-data-tip {
+	color: red;
+}
+
 /* 日历详情 */
 .calendar-data-box {
 	display: flex;

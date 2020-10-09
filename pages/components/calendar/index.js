@@ -32,7 +32,7 @@ Component({
 		},
 		
 		// 日历是否固定显示六行
-		fiexRow: {
+		fixRow: {
 			type: Boolean,
 			value: false
 		},
@@ -41,6 +41,17 @@ Component({
 		selectBackground: {
 			type: String,
 			value: "lightgreen"
+		},
+
+		//	日期是否显示相关的数据
+		dateText: {
+			type: Array,
+			value: [
+				{
+					value: '2020-08-09',
+					text: '售'
+				}
+			]
 		}
 		
 	},
@@ -71,18 +82,6 @@ Component({
 			month: -1,
 			list: []
 		},
-
-	//	日期是否显示相关的数据
-	//
-		dateText: {
-			type: Boolean,
-			value: [
-				{
-					value: '2020-08-09',
-					text: '售'
-				}
-			]
-		}
 	},
 	
 	// 监听一开始显示的月份
@@ -176,6 +175,9 @@ Component({
 			if(date.day) {
 				date.select = date.firstDayWeek + date.day - 1
 			}
+
+		//	格式化显示的提示信息
+			this.formatShowTip(date)
 		},
 		
 		// 获取上个月的日期数据
@@ -217,11 +219,15 @@ Component({
 		},
 
 	//	格式化显示的文字
-		fomatShowTip(date) {
+		formatShowTip(date) {
 			// 循环遍历找出对应的要显示的文字日期
 			this.properties.dateText.forEach((item, index) => {
 				date.list.forEach((arr, temp) => {
-					let value = date.year + '-' + date.month + '-' + item.value
+					let value = date.year + '-' + date.month + '-' + arr.value
+					console.log(value, item.value)
+					if(item.value === value) {
+						arr.text =  item.text
+					}
 				})
 			})
 		}
