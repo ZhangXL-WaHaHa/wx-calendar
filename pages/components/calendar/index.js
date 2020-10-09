@@ -35,6 +35,12 @@ Component({
 		fiexRow: {
 			type: Boolean,
 			value: false
+		},
+
+	//	选中的背景颜色
+		selectBackground: {
+			type: String,
+			value: "lightgreen"
 		}
 		
 	},
@@ -48,7 +54,8 @@ Component({
 		beginShow: {
 			year: -1,
 			month: -1,
-			day: -1
+			day: -1,
+			select: -1,  //选中的时间,位置
 		},  //一开始显示的月份
 		
 		// 上一个月份的时间
@@ -63,6 +70,18 @@ Component({
 			year: -1,
 			month: -1,
 			list: []
+		},
+
+	//	日期是否显示相关的数据
+	//
+		dateText: {
+			type: Boolean,
+			value: [
+				{
+					value: '2020-08-09',
+					text: '售'
+				}
+			]
 		}
 	},
 	
@@ -152,6 +171,11 @@ Component({
 					type: 'next'
 				})
 			}
+
+		//	判断是否有天，如果有，设置一开始选中的号数
+			if(date.day) {
+				date.select = date.firstDayWeek + date.day - 1
+			}
 		},
 		
 		// 获取上个月的日期数据
@@ -182,6 +206,24 @@ Component({
 			// 计算下个月的详细情况
 			this.formatMonthData(this.data.nextMonthInfo)
 			this.calculateResidualDays(this.data.nextMonthInfo)
+		},
+
+	//	点击选中某个时间节点
+		selectDate(e) {
+		//	设置选中的时间节点
+			this.setData({
+				['beginShow.select']: e.currentTarget.dataset.index
+			})
+		},
+
+	//	格式化显示的文字
+		fomatShowTip(date) {
+			// 循环遍历找出对应的要显示的文字日期
+			this.properties.dateText.forEach((item, index) => {
+				date.list.forEach((arr, temp) => {
+					let value = date.year + '-' + date.month + '-' + item.value
+				})
+			})
 		}
 		
 	}

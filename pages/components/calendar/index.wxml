@@ -16,14 +16,21 @@
 		<!-- 一周 -->
 		<view class="calendar-week-box">
 			<view wx:for="{{ weekList }}" wx:key="*this" class="calendar-week-item">
-				<view class="calendar-week-text">{{ item }}</view>
+				<view class="calendar-week-text {{item.type === 'cur'}}">{{ item }}</view>
 			</view>
 		</view>
 	</view>
-	
+
 	<!-- 日历详情部分 -->
 	<!-- 可滑动 -->
 	<view class="">
-		
+		<view class="calendar-data-box">
+			<view wx:for="{{ beginShow.list }}" class="calendar-data-item">
+				<view 
+					class="calendar-data-text {{item.type === 'cur' ? 'calendar-data-cur-text' : ''}}"
+					data-index="{{index}}" bindtap="selectDate"
+					style="background-color: {{index === beginShow.select ? selectBackground : ''}}">{{ item.value }}</view>
+			</view>
+		</view>
 	</view>
 </view>

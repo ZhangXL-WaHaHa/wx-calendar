@@ -34,13 +34,27 @@
 	box-shadow: 0px 4px 2px 0px rgba(0, 0, 0, 0.04);
 	margin-top: 20rpx;
 }
+.calendar-data-item,
 .calendar-week-item {
 	width: 107rpx;
 	height: 107rpx;
 	text-align: center;
 	line-height: 107rpx;
 }
+
+.calendar-data-cur-text,
 .calendar-week-text {
 	font-size: 28rpx;
-	color: #333333;
+	color: #333333 !important;
+}
+.calendar-data-text {
+	font-size: 28rpx;
+	color: #999999;
+}
+
+/* 日历详情 */
+.calendar-data-box {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
 }
