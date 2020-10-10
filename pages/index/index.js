@@ -14,11 +14,17 @@ Page({
 		showDataText: [
 			{
 				value: "2020-10-10",
-				text: '售'
+				text: '余20',
+				direction: 'bottom'
 			},
 			{
 				value: '2020-10-9',
-				text: '售'
+				text: '余20',
+				direction: 'bottom'
+			},
+			{
+				value: '2021-2-8',
+				text: '余32'
 			}
 		],  //日历上显示相关的提示
 	},
