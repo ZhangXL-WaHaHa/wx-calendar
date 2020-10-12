@@ -9,7 +9,7 @@ module.exports = {
 		let nowYear = parseFloat(date.split('-')[0]) || ''
 		let nowMonth = parseFloat(date.split('-')[1]) || ''
 		let nowDay = parseFloat(date.split('-')[2]) || ''
-		
+
 		// 判断输入的数据是否正确
 		if (Number.isNaN(nowYear) || Number.isNaN(nowMonth) || Number.isNaN(nowDay)) {
 			console.warn('请按照正确的格式输入时间')
@@ -26,7 +26,7 @@ module.exports = {
 			year: nowYear,
 			month: nowMonth
 		})
-
+		// 判断年月
 		if (nowYear < 1997 || nowYear > 10000 || nowMonth < 1 || nowMonth > 12) {
 			console.warn('请输入可以计算的时间')
 			return {
@@ -35,9 +35,8 @@ module.exports = {
 				day: new Date().getDate()
 			}
 		}
-
 		//判断天数
-		if (nowDay < 1 || nowDay > value ) {
+		if (nowDay < 1 || nowDay > value) {
 			console.warn('请输入可以计算的时间')
 			return {
 				year: new Date().getFullYear(),

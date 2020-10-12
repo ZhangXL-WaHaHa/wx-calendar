@@ -15,14 +15,20 @@ Page({
 		
 		showDataText: [
 			{
-				value: "2020-10-10",
-				text: '余20',
+				value: "2020-10-1",
+				text: '国庆节',
 				type: 'text',  //文本类型
 				color: 'red',  //文本颜色
 			},
 			{
+				value: '2020-10-8',
+				text: '休',
+				type: 'tag',  //标签类型
+				color: 'lightblue',  //标签颜色
+			},
+			{
 				value: '2020-10-9',
-				text: '售',
+				text: '班',
 				type: 'tag',  //标签类型
 				color: 'green',  //标签颜色
 			},

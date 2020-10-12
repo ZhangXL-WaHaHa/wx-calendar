@@ -27,7 +27,7 @@
 		round
 		show="{{ showMultiple }}" bind:close="onClose" position="bottom">
 		<calendar 
-			fixRow="{{ false }}" title="选择团期" calendarType="multiple" btnText="立即下单"
+			fixRow="{{ true }}" title="选择团期" calendarType="multiple" btnText="立即下单"
 			selectDateMultiple="{{selectDateMultiple}}" beginTime="2020-01-01" 
 			dateText="{{showDataText}}" bind:finishSelectDate="finishSelectDate"></calendar>
 	</van-popup>

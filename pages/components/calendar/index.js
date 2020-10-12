@@ -166,6 +166,8 @@ Component({
 		// 计算完成
 		this.setData({
 			['calendarInfo.cur']: this.data.calendarInfo.cur,
+		}, () => {
+			console.log('输出日期', this.data.calendarInfo)
 		})
 	},
 
@@ -596,16 +598,9 @@ Component({
 			], 100, function() {}.bind(this))
 		},
 
-		// 完成日期选择
-		// finishSelectDate() {
-		// 	if(this.properties.showButton) {
-		// 		return ;
-		// 	}
-		// },
-
 		// 点击按钮，完成日期选择
 		tapBtn() {
-			// 判断相关的模式
+			// 判断当前的模式
 			switch (this.properties.calendarType) {
 				case 'multiple':
 					this.triggerEvent('finishSelectDate', this.properties.selectDateMultiple)
