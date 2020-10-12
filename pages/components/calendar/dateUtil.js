@@ -6,10 +6,10 @@ module.exports = {
 	 */
 	formatNowDate(date) {
 		// 切割传过来的数据
-		let nowYear = parseFloat(date.split('-')[0])
-		let nowMonth = parseFloat(date.split('-')[1])
-		let nowDay = parseFloat(date.split('-')[2])
-
+		let nowYear = parseFloat(date.split('-')[0]) || ''
+		let nowMonth = parseFloat(date.split('-')[1]) || ''
+		let nowDay = parseFloat(date.split('-')[2]) || ''
+		
 		// 判断输入的数据是否正确
 		if (Number.isNaN(nowYear) || Number.isNaN(nowMonth) || Number.isNaN(nowDay)) {
 			console.warn('请按照正确的格式输入时间')

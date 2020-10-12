@@ -2,6 +2,7 @@
 import dateUtil from "dateUtil.js"
 const DAY_TYPE = ['last', 'cur', 'next'] //类型，分为上月，本月和下个月
 const DATE_TYPE = ['between', 'select', 'unSelect']
+let preHeight = 999
 
 Component({
 	/**
@@ -14,7 +15,7 @@ Component({
 			type: String,
 			value: 'single'
 		},
-		
+
 		// 预先设置选中的日期
 		selectDate: {
 			type: String,
@@ -43,7 +44,7 @@ Component({
 			type: Boolean,
 			value: false
 		},
-		
+
 		// 是否显示日历标题
 		showTitle: {
 			type: Boolean,
@@ -66,16 +67,16 @@ Component({
 			value: ''
 		},
 
+		// 每月是否显示上下月的残余天数
+		showRemnantDays: {
+			type: Boolean,
+			value: true
+		},
+
 		// 日历是否固定显示六行
 		fixRow: {
 			type: Boolean,
 			value: false
-		},
-
-		//	选中的背景颜色
-		selectBackground: {
-			type: String,
-			value: "lightgreen"
 		},
 
 		//	日期是否显示相关的数据
@@ -98,16 +99,16 @@ Component({
 			type: Boolean,
 			value: false
 		},
-
-		// 是否是选择时间范围
-		selectDataRange: {
-			type: Boolean,
-			value: false
+		// 底部按钮文案
+		btnText: {
+			type: String,
+			value: '这是按钮'
 		},
-		// 设置选择的时间范围大小,-1表示不设置大小
-		dataRangeSize: {
-			type: Number,
-			value: -1
+
+		// 是否显示高度过渡动画，仅在没有固定行数下生效
+		animated: {
+			type: Boolean,
+			value: true
 		}
 	},
 
@@ -115,6 +116,7 @@ Component({
 	 * 组件的初始数据
 	 */
 	data: {
+		dayType: DAY_TYPE,
 		weekList: ['日', '一', '二', '三', '四', '五', '六'], //一周
 
 		// 每个日期添加颜色状态
@@ -146,27 +148,22 @@ Component({
 		}, //日历副标题
 
 		showCalendarIndex: 1, //当前显示的日历信息
-	},
-
-	// 监听一开始显示的月份
-	observers: {
-		"beginTime": function(time) {
-			this.data.calendarInfo.cur = {
-				...dateUtil.formatNowDate(time),
-				list: []
-			}
-		}
+		calendarHeight: 999, //记录日历当前的高度
 	},
 
 	// 一开始加载时获取当前的时间
 	attached() {
-		this.formatMonthData(this.data.calendarInfo.cur)
+		this.data.calendarInfo.cur = {
+			...dateUtil.formatNowDate(this.properties.beginTime),
+			list: []
+		}
 
+		this.formatMonthData(this.data.calendarInfo.cur)
 		// 计算上个月和下个月的数据
 		this.getLastMonth()
 		this.getNextMonth()
 
-		// 计算完成，重新渲染
+		// 计算完成
 		this.setData({
 			['calendarInfo.cur']: this.data.calendarInfo.cur,
 		})
@@ -179,7 +176,7 @@ Component({
 		// 获取本月的天数和1号是星期几
 		formatMonthData(date) {
 			let value = dateUtil.getTotalDays(date)
-			
+
 			// 添加日期
 			for (let i = 1; i <= value; i++) {
 				date.list.push({
@@ -198,9 +195,9 @@ Component({
 					this.formatRangeDateColor(date)
 					break;
 				default:
-						this.formatDateColor(date)
+					this.formatDateColor(date)
 			}
-			
+
 			// 获取当前月份1号星期几
 			date.firstDayWeek = dateUtil.getFirstDayWeek(date)
 			// 计算残余天数
@@ -214,7 +211,7 @@ Component({
 				// 判断预选的日期是否与当前的日期一致
 				this.properties.selectDateMultiple.forEach((item, index) => {
 					date.list.forEach((arr, temp) => {
-						if(item === date.year +  '-' + date.month + '-' + arr.value) {
+						if (item === date.year + '-' + date.month + '-' + arr.value) {
 							arr.color = 'select'
 						}
 					})
@@ -228,8 +225,9 @@ Component({
 			let endTimeStamp = new Date(this.properties.selectDateRange.end.replace(/-/g, '/')).getTime()
 
 			// 判断是否有选择日期
-			if (this.properties.selectDateRange.begin === '' && this.properties.selectDateRange.end === '' || beginTimeStamp > endTimeStamp) {
-				return ;
+			if (this.properties.selectDateRange.begin === '' && this.properties.selectDateRange.end === '' || beginTimeStamp >
+				endTimeStamp) {
+				return;
 			} else {
 				// 判断日期是否在选择范围之内
 				date.list.forEach((item, index) => {
@@ -248,7 +246,7 @@ Component({
 		formatDateColor(date) {
 			// 判断是否有预选的日期
 			date.list.forEach((item, index) => {
-				if((date.year + '-' + date.month + '-' + item.value) === this.properties.selectDate) {
+				if ((date.year + '-' + date.month + '-' + item.value) === this.properties.selectDate) {
 					item.color = 'select'
 				}
 			})
@@ -263,7 +261,7 @@ Component({
 			})
 			for (let i = 0; i < date.firstDayWeek; i++) {
 				date.list.unshift({
-					value: last_value - i,
+					value: this.properties.showRemnantDays ? last_value - i : '',
 					type: 'last'
 				})
 			}
@@ -279,11 +277,11 @@ Component({
 			}
 			let next_value = total * 7 - date.list.length
 
-			// 设置滚动框的高度
+			// 设置滚动框的高度,设置变化的过度动画
 			date.swiperHeight = total * 107
 			for (let i = 1; i <= next_value; i++) {
 				date.list.push({
-					value: i,
+					value: this.properties.showRemnantDays ? i : '',
 					type: 'next'
 				})
 			}
@@ -367,30 +365,36 @@ Component({
 			let index = e.currentTarget.dataset.index
 			// 修改对应的月份
 			let date = this.data.calendarInfo[key]
-			
+
 			if (e.currentTarget.dataset.type === 'last') {
+				if (!this.properties.showRemnantDays) {
+					return;
+				}
 				this.showLastMonth()
 			} else if (e.currentTarget.dataset.type === 'next') {
+				if (!this.properties.showRemnantDays) {
+					return;
+				}
 				this.showNextMonth()
 			} else {
-				// 当前的模式是否是选择范围
+				// 当前模式为选择日期范围
 				if (this.properties.calendarType === 'range') {
 					this.selectDateRange(key, index)
-					return ;
+					return;
 				}
-				
-				// 当前模式是否是多选
+
+				// 当前模式为多选
 				if (this.properties.calendarType === 'multiple') {
 					this.selectDateMultiple(key, index)
 					return;
 				}
-				
+
 				// 单一模式下选择时间节点
 				this.properties.selectDate = date.year + '-' + date.month + '-' + date.list[index].value
 				// 重置三个月之内选中节点
 				Object.keys(this.data.calendarInfo).forEach(item => {
 					this.data.calendarInfo[item].list.forEach((arr, len) => {
-						if(arr.color === 'select') {
+						if (arr.color === 'select') {
 							this.setData({
 								[`calendarInfo.${item}.list[${len}].color`]: 'unSelect'
 							})
@@ -399,6 +403,11 @@ Component({
 				})
 				this.setData({
 					[`calendarInfo.${key}.list[${index}].color`]: 'select',
+				}, () => {
+					// 结束
+					if (!this.properties.showButton) {
+						this.tapBtn()
+					}
 				})
 			}
 		},
@@ -406,9 +415,9 @@ Component({
 		selectDateRange(key, index) {
 			// 设置要修改的月份
 			let date = this.data.calendarInfo[key]
-			
+
 			// 判断当前是否有开始日期或者是结束日期
-			if(this.properties.selectDateRange.begin === '') {
+			if (this.properties.selectDateRange.begin === '') {
 				// 没有预设日期，设置起始日期
 				this.properties.selectDateRange.begin = date.year + '-' + date.month + '-' + date.list[index].value
 				this.setData({
@@ -418,7 +427,7 @@ Component({
 				// 重置三个月内的所有选中日期
 				Object.keys(this.data.calendarInfo).forEach(item => {
 					this.data.calendarInfo[item].list.forEach((arr, len) => {
-						if(arr.color !== 'unSelect') {
+						if (arr.color !== 'unSelect') {
 							arr.color = 'unSelect'
 						}
 					})
@@ -429,49 +438,50 @@ Component({
 				this.data.calendarInfo[key].list[index].color = 'select'
 				this.setData({
 					calendarInfo: this.data.calendarInfo
-					
+
 				})
 			} else {
 				// 判断结束位置是否是在起始位置的前面，若是，清空退出
 				this.properties.selectDateRange.end = date.year + '-' + date.month + '-' + date.list[index].value
 				let beginTimeStamp = new Date(this.properties.selectDateRange.begin.replace(/-/g, '/')).getTime()
 				let endTimeStamp = new Date(this.properties.selectDateRange.end.replace(/-/g, '/')).getTime()
-				
-				if(beginTimeStamp > endTimeStamp) {
+
+				if (beginTimeStamp > endTimeStamp) {
 					this.properties.selectDateRange = {
 						begin: '',
 						end: ''
 					}
 					Object.keys(this.data.calendarInfo).forEach((item) => {
 						this.data.calendarInfo[item].list.forEach((arr, len) => {
-							if(arr.color === 'select') {
+							if (arr.color === 'select') {
 								this.setData({
 									[`calendarInfo.${item}.list[${len}].color`]: 'unSelect'
 								})
 							}
 						})
 					})
-					return ;
+					return;
 				}
-				
+
 				// 判断是否设置了起始位置和结束位置是否可以一致,没有，清空退出
-				if(!this.properties.allowSameDate && beginTimeStamp === endTimeStamp) {
-					this.properties.selectDateRange = {
-						begin: '',
-						end: ''
-					}
-					this.setData({
-						[`calendarInfo.${key}.list[${index}].color`]: 'unSelect',
-					})
-					return ;
+				if (!this.properties.allowSameDate && beginTimeStamp === endTimeStamp) {
+					// this.properties.selectDateRange = {
+					// 	begin: '',
+					// 	end: ''
+					// }
+					// this.setData({
+					// 	[`calendarInfo.${key}.list[${index}].color`]: 'unSelect',
+					// })
+					this.properties.selectDateRange.end = ''
+					return;
 				}
-				
+
 				// 判断起始和结束的天数是否大于选择的范围
 				let dayRange = this.properties.allowSameDate ? 1 : 2
-				if(this.properties.selectDateRangeSize >= dayRange) {
+				if (this.properties.selectDateRangeSize >= dayRange) {
 					// 判断起始和结束相差的天数,要加上结束那一天
 					let differDay = (endTimeStamp - beginTimeStamp) / (24 * 60 * 60 * 1000) + 1
-					if(differDay > this.properties.selectDateRangeSize) {
+					if (differDay > this.properties.selectDateRangeSize) {
 						wx.showToast({
 							title: '选择的天数不能超过' + this.properties.selectDateRangeSize + '天',
 							icon: 'none'
@@ -483,20 +493,25 @@ Component({
 						this.properties.selectDateRange.end = endDate.getFullYear() + '-' + (endDate.getMonth() + 1) + '-' + endDate.getDate()
 					}
 				}
-				
+
 				// 设置相关的日期颜色范围,使用时间戳判断
 				Object.keys(this.data.calendarInfo).forEach(item => {
 					this.data.calendarInfo[item].list.forEach((arr, len) => {
-						let timeStamp = new Date(this.data.calendarInfo[item].year + '/' + this.data.calendarInfo[item].month + '/' + arr.value).getTime()
-						if(timeStamp > beginTimeStamp && timeStamp < endTimeStamp && arr.type === 'cur') {
+						let timeStamp = new Date(this.data.calendarInfo[item].year + '/' + this.data.calendarInfo[item].month + '/' +
+							arr.value).getTime()
+						if (timeStamp > beginTimeStamp && timeStamp < endTimeStamp && arr.type === 'cur') {
 							arr.color = 'between'
-						} else if(timeStamp === endTimeStamp && arr.type === 'cur') {
+						} else if (timeStamp === endTimeStamp && arr.type === 'cur') {
 							arr.color = 'select'
 						}
 					})
 				})
 				this.setData({
 					calendarInfo: this.data.calendarInfo
+				}, () => {
+					if (!this.properties.showButton) {
+						this.tapBtn()
+					}
 				})
 			}
 		},
@@ -504,19 +519,19 @@ Component({
 		selectDateMultiple(key, index) {
 			// 设置要修改的月份
 			let date = this.data.calendarInfo[key]
-			
+
 			// 修改select属性,添加和弹出新的日期
-			if(date.list[index].color === 'select') {
+			if (date.list[index].color === 'select') {
 				// 多选日期找到对应的数据，弹出
 				this.properties.selectDateMultiple.forEach((item, temp) => {
-					if(item === date.year + '-' + date.month + '-' + date.list[index].value) {
+					if (item === date.year + '-' + date.month + '-' + date.list[index].value) {
 						this.properties.selectDateMultiple.splice(temp, 1)
 					}
 				})
 				this.setData({
 					[`calendarInfo.${key}.list[${index}].color`]: 'unSelect',
 				})
-			} else if(date.list[index].color === 'unSelect') {
+			} else if (date.list[index].color === 'unSelect') {
 				// 直接添加对应的数据
 				this.properties.selectDateMultiple.push(date.year + '-' + date.month + '-' + date.list[index].value)
 				this.setData({
@@ -524,7 +539,7 @@ Component({
 				})
 			}
 		},
-		
+
 		//	格式化显示的文字
 		formatShowTip(date) {
 			// 循环遍历找出对应的要显示的文字日期
@@ -542,9 +557,12 @@ Component({
 
 		// 点击显示下一月
 		showNextMonth() {
+			preHeight = this.data.calendarInfo[DAY_TYPE[this.data.showCalendarIndex]].swiperHeight
 			// 显示下一个月的数据,需要改变的数据是下下个月
 			this.setData({
-				showCalendarIndex: (++this.data.showCalendarIndex) % 3
+				showCalendarIndex: (++this.data.showCalendarIndex) % 3,
+			}, () => {
+				this.calendarHeightTransition()
 			})
 
 			// 获取下一个月的数据，会改变下个月的数据
@@ -553,13 +571,52 @@ Component({
 
 		// 点击显示上一月
 		showLastMonth() {
+			preHeight = this.data.calendarInfo[DAY_TYPE[this.data.showCalendarIndex]].swiperHeight
 			// 切换上个月，需要改变的数据是上上个月
 			this.setData({
 				showCalendarIndex: (--this.data.showCalendarIndex) < 0 ? 2 : this.data.showCalendarIndex,
+			}, () => {
+				this.calendarHeightTransition()
 			})
 
 			// 获取上一个月的数据
 			this.getLastMonth()
 		},
+
+		// 日历高度的过渡动画
+		calendarHeightTransition() {
+			if (!this.properties.animated && this.properties.fixRow) {
+				return;
+			}
+			this.animate('#calendar', [{
+					height: preHeight
+				},
+				{
+					height: this.data.calendarInfo[DAY_TYPE[this.data.showCalendarIndex]].swiperHeight
+				},
+			], 100, function() {}.bind(this))
+		},
+
+		// 完成日期选择
+		// finishSelectDate() {
+		// 	if(this.properties.showButton) {
+		// 		return ;
+		// 	}
+		// },
+
+		// 点击按钮，完成日期选择
+		tapBtn() {
+			// 判断相关的模式
+			switch (this.properties.calendarType) {
+				case 'multiple':
+					this.triggerEvent('finishSelectDate', this.properties.selectDateMultiple)
+					break;
+				case 'range':
+					this.triggerEvent('finishSelectDate', this.properties.selectDateRange)
+					break;
+				default:
+					this.triggerEvent('finishSelectDate', this.properties.selectDate)
+			}
+		}
 	}
 })

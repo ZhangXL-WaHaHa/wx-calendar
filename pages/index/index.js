@@ -106,5 +106,11 @@ Page({
 			showRange: false,
 			showMultiple: false
 		})
+	},
+	
+	// 完成选择
+	finishSelectDate(e) {
+		this.onClose()
+		console.log('选择的日期 ==> ', e.detail)
 	}
 })

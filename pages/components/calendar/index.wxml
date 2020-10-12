@@ -24,7 +24,9 @@
 	<!-- 日历详情部分 -->
 	<swiper 
 		circular="{{ true }}"
-		current="{{showCalendarIndex}}" style="height: {{calendarInfo.cur.swiperHeight}}rpx">
+		current="{{showCalendarIndex}}" 
+		id="calendar"
+		style="height: {{calendarInfo[dayType[showCalendarIndex]].swiperHeight}}rpx">
 		<block wx:for="{{calendarInfo}}" wx:for-item="arr" wx:for-index="temp">
 			<swiper-item catchtouchmove="{{ false }}">
 				<view class="calendar-data-box">
@@ -34,7 +36,7 @@
 						<view 
 							class="calendar-data-text {{item.type === 'cur' ? 'calendar-data-cur-text' : ''}}">{{ item.value }}</view>
 						<!--				设置显示的提示词语-->
-						<view class="calendar-data-tip" wx:if="{{item.text}}" style="">{{item.text}}</view>
+						<view class="calendar-data-tip line-1" wx:if="{{item.text}}" style="">{{item.text}}</view>
 					</view>
 					
 					<!-- 显示月份水印 -->
@@ -45,5 +47,7 @@
 	</swiper>
 	
 	<!-- 底部按钮 -->
-	<button wx:if="{{showButton}}" class="calendar-data-btn"></button>
+	<button 
+		wx:if="{{showButton || calendarType === 'multiple'}}" hover-class="calendar-data-btn-hover"
+		type="primary" class="calendar-data-btn" bindtap="tapBtn">{{btnText}}</button>
 </view>

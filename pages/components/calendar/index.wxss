@@ -3,21 +3,26 @@ page {
 	/* 日历标题颜色 */
 	--theme-title-color: #333333;
 	--theme-subtitle-color: #333333;
-	
+
 	/* 周数文字颜色 */
 	--theme-week-text-color: #333333;
+	/* 日期文字显示，此为非本月数据显示 */
 	--theme-date-text-color: #999999;
-	
+
 	/* 不同的选中状态颜色 */
 	--theme-select-color: rgba(255, 171, 34);
 	--theme-between-color: rgba(255, 171, 34, 0.3);
 	--theme-unselect-color: transparent;
-	
+
 	/* 水印颜色 */
 	--theme-month-mark-color: rgba(242, 243, 245, .8);
-	
+
 	/* 提示文案的颜色 */
 	--theme-date-tip-color: #333333;
+	
+	/* 按钮颜色 */
+	--theme-btn-color: rgba(255, 100, 34, 1);
+	--theme-btn-hover-color: rgba(255, 100, 34, 0.8);
 }
 
 .calendar-container {
@@ -33,22 +38,26 @@ page {
 	color: var(--theme-title-color);
 	text-align: center;
 }
+
 .calnedar-subtitle-box {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	margin-top: 40rpx;
 }
+
 .calendar-icon-last,
 .calendar-icon-next {
 	width: 30rpx;
 	height: 30rpx;
 }
+
 .calendar-subtitle {
 	font-size: 28rpx;
 	color: var(--theme-subtitle-color);
 	margin: 0 20rpx;
 }
+
 .calendar-week-box {
 	position: relative;
 	display: flex;
@@ -57,6 +66,7 @@ page {
 	margin-top: 20rpx;
 	z-index: 9
 }
+
 .calendar-data-item,
 .calendar-week-item {
 	width: 107rpx;
@@ -66,28 +76,42 @@ page {
 	align-items: center;
 	justify-content: center;
 }
+
 .calendar-data-cur-text,
 .calendar-week-text {
 	font-size: 28rpx;
 	color: var(--theme-week-text-color) !important;
 }
+
 .calendar-data-text {
 	font-size: 28rpx;
 	color: var(--theme-date-text-color);
 }
 
+/* 提示文案 */
 .calendar-data-tip {
 	font-size: 26rpx;
 	color: var(--theme-date-tip-color)
+}
+
+/* 防止文案过长 */
+.line-1 {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 1;
 }
 
 /* 日期选中的颜色 */
 .calendar-data-color-select {
 	background-color: var(--theme-select-color);
 }
+
 .calendar-data-color-between {
 	background-color: var(--theme-between-color);
 }
+
 .calendar-data-color-unSelect {
 	background-color: var(--theme-unselect-color);
 }
@@ -114,5 +138,15 @@ page {
 
 /* 底部按钮 */
 .calendar-data-btn {
-	
+	background-color: var(--theme-btn-color) !important;
+	color: white;
+	font-size: 28rpx;
+	white-space: nowrap;
+	width: 600rpx !important;
+	padding: 20rpx 0;
+	text-align: center;
+	border-radius: 50rpx;
+}
+.calendar-data-btn-hover {
+	background-color: var(--theme-btn-hover-color) !important;
 }
