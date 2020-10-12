@@ -10,23 +10,35 @@ Page({
 		canIUse: wx.canIUse('button.open-type.getUserInfo'),
 		
 		show: false,  //是否显示日历弹出框
-
+		showMultiple: false,
+		showRange: false,
+		
 		showDataText: [
 			{
 				value: "2020-10-10",
 				text: '余20',
-				direction: 'bottom'
 			},
 			{
 				value: '2020-10-9',
 				text: '余20',
-				direction: 'bottom'
 			},
 			{
 				value: '2021-2-8',
 				text: '余32'
 			}
 		],  //日历上显示相关的提示
+		
+		selectDateMultiple: [
+			'2020-12-10',
+			'2020-10-15',
+			'2020-10-18',
+			'2020-11-7'
+		],  //一开始选中的日期
+		selectDateRange: {
+			begin: '2020-10-20',
+			end: '2020-10-27'
+		},
+		selectDate: '2020-10-16',
 	},
 	//事件处理函数
 	bindViewTap: function() {
@@ -77,10 +89,22 @@ Page({
 			show: true
 		})
 	},
+	showRangeCalendar() {
+		this.setData({
+			showRange: true
+		})
+	},
+	showMultipleCalendar() {
+		this.setData({
+			showMultiple: true
+		})
+	},
 	
 	onClose() {
 		this.setData({
-			show: false
+			show: false,
+			showRange: false,
+			showMultiple: false
 		})
 	}
 })

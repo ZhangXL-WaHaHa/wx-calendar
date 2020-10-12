@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <view class="container">
-	<view class="userinfo">
+	<!-- <view class="userinfo">
 		<button wx:if="{{!hasUserInfo && canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
 		<block wx:else>
 			<image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
@@ -9,15 +9,36 @@
 	</view>
 	<view class="usermotto">
 		<text class="user-motto">{{motto}}</text>
-	</view>
-	<button bindtap="showCalendar">点击显示日历</button>
+	</view> -->
+	<button bindtap="showCalendar">单选日历</button>
+	<button bindtap="showRangeCalendar">区间范围选择日历</button>
+	<button bindtap="showMultipleCalendar">多选日历</button>
 	
-	<!-- 日历弹出框 -->
+	<!-- 单选弹框 -->
 	<van-popup 
 		round
 		show="{{ show }}" bind:close="onClose" position="bottom">
 		<calendar 
 			fixRow="{{ true }}" title="选择团期"
+			selectDate="{{selectDate}}"
+			beginTime="2020-01-01" dateText="{{showDataText}}"></calendar>
+	</van-popup>
+	<!-- 多选弹框 -->
+	<van-popup
+		round
+		show="{{ showMultiple }}" bind:close="onClose" position="bottom">
+		<calendar 
+			fixRow="{{ true }}" title="选择团期" calendarType="multiple"
+			selectDateMultiple="{{selectDateMultiple}}"
+			beginTime="2020-01-01" dateText="{{showDataText}}"></calendar>
+	</van-popup>
+	<!-- 范围选择弹框 -->
+	<van-popup
+		round
+		show="{{ showRange }}" bind:close="onClose" position="bottom">
+		<calendar 
+			fixRow="{{ true }}" title="选择团期" calendarType="range"
+			selectDateRange="{{selectDateRange}}"
 			beginTime="2020-01-01" dateText="{{showDataText}}"></calendar>
 	</van-popup>
 </view>

@@ -29,9 +29,8 @@
 			<swiper-item catchtouchmove="{{ false }}">
 				<view class="calendar-data-box">
 					<view 
-						wx:for="{{ arr.list }}" class="calendar-data-item" 
-						data-index="{{index}}" data-type="{{item.type}}" data-key="{{temp}}" bindtap="selectDate"
-						style="background-color: {{index === arr.select ? selectBackground : ''}}">
+						wx:for="{{ arr.list }}" class="calendar-data-item calendar-data-color-{{item.color}}" 
+						data-index="{{index}}" data-type="{{item.type}}" data-key="{{temp}}" bindtap="selectDate">
 						<view 
 							class="calendar-data-text {{item.type === 'cur' ? 'calendar-data-cur-text' : ''}}">{{ item.value }}</view>
 						<!--				设置显示的提示词语-->
@@ -47,5 +46,4 @@
 	
 	<!-- 底部按钮 -->
 	<button wx:if="{{showButton}}" class="calendar-data-btn"></button>
-
 </view>

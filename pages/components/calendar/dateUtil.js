@@ -26,7 +26,6 @@ module.exports = {
 			year: nowYear,
 			month: nowMonth
 		})
-		console.log('输出当前月份的天数', value, nowYear, nowMonth)
 
 		if (nowYear < 1997 || nowYear > 10000 || nowMonth < 1 || nowMonth > 12) {
 			console.warn('请输入可以计算的时间')
@@ -38,10 +37,7 @@ module.exports = {
 		}
 
 		//判断天数
-		if (nowDay < 1 || nowDay < this.getTotalDays({
-				year: nowYear,
-				month: nowMonth
-			})) {
+		if (nowDay < 1 || nowDay > value ) {
 			console.warn('请输入可以计算的时间')
 			return {
 				year: new Date().getFullYear(),
