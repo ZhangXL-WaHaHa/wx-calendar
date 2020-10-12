@@ -35,8 +35,15 @@
 						data-index="{{index}}" data-type="{{item.type}}" data-key="{{temp}}" bindtap="selectDate">
 						<view 
 							class="calendar-data-text {{item.type === 'cur' ? 'calendar-data-cur-text' : ''}}">{{ item.value }}</view>
-						<!--				设置显示的提示词语-->
-						<view class="calendar-data-tip line-1" wx:if="{{item.text}}" style="">{{item.text}}</view>
+						<!--	不同类型的提示文案		-->
+						<view 
+							wx:if="{{item.tip.type === 'text'}}"
+							class="calendar-data-text-tip line-1"
+							style="color: {{item.tip.color || '#333333'}}">{{item.tip.text}}</view>
+						<view 
+							wx:if="{{item.tip.type === 'tag'}}"
+							class="calendar-data-tag-tip"
+							style="background-color: {{item.tip.color || 'lightgreen'}};">{{item.tip.text}}</view>
 					</view>
 					
 					<!-- 显示月份水印 -->

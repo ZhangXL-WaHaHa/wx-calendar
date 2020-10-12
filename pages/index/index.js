@@ -17,14 +17,20 @@ Page({
 			{
 				value: "2020-10-10",
 				text: '余20',
+				type: 'text',  //文本类型
+				color: 'red',  //文本颜色
 			},
 			{
 				value: '2020-10-9',
-				text: '余20',
+				text: '售',
+				type: 'tag',  //标签类型
+				color: 'green',  //标签颜色
 			},
 			{
 				value: '2021-2-8',
-				text: '余32'
+				text: '余32',
+				color: 'blue'
+				
 			}
 		],  //日历上显示相关的提示
 		
@@ -33,11 +39,11 @@ Page({
 			'2020-10-15',
 			'2020-10-18',
 			'2020-11-7'
-		],  //一开始选中的日期
+		],  //多选日期预设值
 		selectDateRange: {
 			begin: '2020-10-20',
 			end: '2020-10-27'
-		},
+		},  //范围选择预设值
 		selectDate: '2020-10-16',
 	},
 	//事件处理函数
@@ -110,7 +116,8 @@ Page({
 	
 	// 完成选择
 	finishSelectDate(e) {
-		this.onClose()
+		// 处理选择之后的逻辑
+		// this.onClose()
 		console.log('选择的日期 ==> ', e.detail)
 	}
 })

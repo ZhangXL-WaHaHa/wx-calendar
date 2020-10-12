@@ -88,12 +88,25 @@ page {
 	color: var(--theme-date-text-color);
 }
 
-/* 提示文案 */
-.calendar-data-tip {
+/* 不同位置的提示文案 */
+.calendar-data-text-tip {
 	font-size: 26rpx;
 	color: var(--theme-date-tip-color)
 }
-
+.calendar-data-tag-tip {
+	width: 30rpx;
+	height: 30rpx;
+	font-size: 24rpx;
+	line-height: 30rpx;
+	text-align: center;
+	color: white;
+	
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	z-index: -1;
+	
+}
 /* 防止文案过长 */
 .line-1 {
 	overflow: hidden;

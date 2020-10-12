@@ -102,7 +102,7 @@ Component({
 		// 底部按钮文案
 		btnText: {
 			type: String,
-			value: '这是按钮'
+			value: '多选需要设置按钮文案'
 		},
 
 		// 是否显示高度过渡动画，仅在没有固定行数下生效
@@ -472,6 +472,7 @@ Component({
 					// this.setData({
 					// 	[`calendarInfo.${key}.list[${index}].color`]: 'unSelect',
 					// })
+					// 不做任何处理
 					this.properties.selectDateRange.end = ''
 					return;
 				}
@@ -547,9 +548,7 @@ Component({
 				date.list.forEach((arr, temp) => {
 					let value = date.year + '-' + date.month + '-' + arr.value
 					if (item.value === value && arr.type === 'cur') {
-						arr.text = item.text
-						// 文字显示的方向
-						arr.textDirection = item.direction
+						arr.tip = item
 					}
 				})
 			})
