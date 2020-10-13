@@ -118,6 +118,25 @@ page {
 	-webkit-line-clamp: 1;
 }
 
+/* 选择日期范围起始文案提示 */
+.calendar-data-rang-tip {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 9;
+	
+	background-color: var(--theme-select-color);
+	color: white;
+	white-space: pre-wrap;
+	font-size: 28rpx;
+	
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
 /* 日期选中的颜色 */
 .calendar-data-color-select {
 	background-color: var(--theme-select-color);

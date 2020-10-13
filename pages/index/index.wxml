@@ -22,6 +22,7 @@
 			fixRow="{{ false }}" title="选择团期" showRemnantDays="{{ false }}" showHoliday="{{ true }}"
 			selectDate="{{selectDate}}" dateText="{{showDataText}}" bind:finishSelectDate="finishSelectDate"></calendar>
 	</van-popup>
+	
 	<!-- 多选弹框 -->
 	<van-popup
 		round
@@ -31,13 +32,29 @@
 			selectDateMultiple="{{selectDateMultiple}}" beginTime="2020-01-01" showHoliday="{{true}}"
 			dateText="{{showDataText}}" bind:finishSelectDate="finishSelectDate"></calendar>
 	</van-popup>
+	
 	<!-- 范围选择弹框 -->
-	<van-popup
+	<!-- <van-popup
 		round
 		show="{{ showRange }}" bind:close="onClose" position="bottom">
 		<calendar 
 			fixRow="{{ true }}" title="选择团期" calendarType="range"
-			selectDateRange="{{selectDateRange}}" dateText="{{showDataText}}"
-			bind:finishSelectDate="finishSelectDate"></calendar>
+			dateText="{{showDataText}}" bind:finishSelectDate="finishSelectDate"></calendar>
+	</van-popup> -->
+	<!-- 范围选择不显示起始文案 -->
+<!-- 	<van-popup
+		round
+		show="{{ showRange }}" bind:close="onClose" position="bottom">
+		<calendar 
+			fixRow="{{ true }}" title="选择团期" calendarType="range" selectDateRange="{{selectDateRange}}"
+			dateText="{{showDataText}}" bind:finishSelectDate="finishSelectDate"></calendar>
+	</van-popup> -->
+	<!-- 设置范围天数 -->
+	<van-popup
+		round
+		show="{{ showRange }}" bind:close="onClose" position="bottom">
+		<calendar 
+			fixRow="{{ true }}" title="选择团期" calendarType="range" selectDateRangeSize="10"
+			dateText="{{showDataText}}" bind:finishSelectDate="finishSelectDate"></calendar>
 	</van-popup>
 </view>

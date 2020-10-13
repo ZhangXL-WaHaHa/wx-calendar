@@ -35,7 +35,7 @@ Component({
 				begin: '',
 				end: '',
 				
-				// 新增开始结束文案
+				// 新增开始结束文案,文案提示形式暂定为显示正中间
 				beginText: '开始',
 				endText: '结束'
 			}
@@ -244,13 +244,15 @@ Component({
 				// 判断日期是否在选择范围之内
 				date.list.forEach((item, index) => {
 					let timeStamp = new Date(date.year + '/' + date.month + '/' + item.value).getTime()
-					let colorValue = 'unSelect'
-					if (timeStamp === beginTimeStamp || timeStamp === endTimeStamp) {
-						colorValue = 'select'
+					if (timeStamp === beginTimeStamp) {
+						item.color = 'select'
+						item.rangTip = this.properties.selectDateRange.beginText
+					} else if (timeStamp === endTimeStamp) {
+						item.color = 'select'
+						item.rangTip = this.properties.selectDateRange.endText
 					} else if (timeStamp > beginTimeStamp && timeStamp < endTimeStamp) {
-						colorValue = 'between'
+						item.color = 'between'
 					}
-					item.color = colorValue
 				})
 			}
 		},
@@ -434,6 +436,7 @@ Component({
 				this.properties.selectDateRange.begin = date.year + '-' + date.month + '-' + date.list[index].value
 				this.setData({
 					[`calendarInfo.${key}.list[${index}].color`]: 'select',
+					[`calendarInfo.${key}.list[${index}].rangTip`]: this.properties.selectDateRange.beginText,
 				})
 			} else if (this.properties.selectDateRange.begin !== '' && this.properties.selectDateRange.end !== '') {
 				// 重置三个月内的所有选中日期
@@ -441,6 +444,7 @@ Component({
 					this.data.calendarInfo[item].list.forEach((arr, len) => {
 						if (arr.color !== 'unSelect') {
 							arr.color = 'unSelect'
+							delete arr.rangTip
 						}
 					})
 				})
@@ -448,6 +452,7 @@ Component({
 				this.properties.selectDateRange.begin = date.year + '-' + date.month + '-' + date.list[index].value
 				this.properties.selectDateRange.end = ''
 				this.data.calendarInfo[key].list[index].color = 'select'
+				this.data.calendarInfo[key].list[index].rangTip = this.properties.selectDateRange.beginText
 				this.setData({
 					calendarInfo: this.data.calendarInfo
 
@@ -460,14 +465,17 @@ Component({
 
 				if (beginTimeStamp > endTimeStamp) {
 					this.properties.selectDateRange = {
+						...this.properties.selectDateRange,
 						begin: '',
 						end: ''
 					}
 					Object.keys(this.data.calendarInfo).forEach((item) => {
 						this.data.calendarInfo[item].list.forEach((arr, len) => {
 							if (arr.color === 'select') {
+								arr.color = 'unSelect'
+								delete arr.rangTip
 								this.setData({
-									[`calendarInfo.${item}.list[${len}].color`]: 'unSelect'
+									[`calendarInfo.${item}.list[${len}]`]: this.data.calendarInfo[item].list[len]
 								})
 							}
 						})
@@ -516,6 +524,8 @@ Component({
 							arr.color = 'between'
 						} else if (timeStamp === endTimeStamp && arr.type === 'cur') {
 							arr.color = 'select'
+							console.log('经过这一步')
+							arr.rangTip = this.properties.selectDateRange.endText
 						}
 					})
 				})

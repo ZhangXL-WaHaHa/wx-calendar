@@ -44,6 +44,10 @@
 							wx:if="{{item.tip.type === 'tag'}}"
 							class="calendar-data-tag-tip"
 							style="background-color: {{item.tip.color || 'lightgreen'}};">{{item.tip.text}}</view>
+						
+						<!-- 显示起始文案 -->
+						<view 
+							wx:if="{{item.rangTip && item.rangTip !== ''}}" class="calendar-data-rang-tip">{{item.rangTip}}</view>
 					</view>
 					
 					<!-- 显示月份水印 -->

@@ -36,7 +36,6 @@ Page({
 				value: '2021-2-8',
 				text: '余32',
 				color: 'blue'
-				
 			}
 		],  //日历上显示相关的提示
 		
@@ -47,8 +46,10 @@ Page({
 			'2020-11-7'
 		],  //多选日期预设值
 		selectDateRange: {
-			begin: '2020-10-20',
-			end: '2020-10-27'
+			begin: '',
+			end: '',
+			beginText: '',
+			endText: ''
 		},  //范围选择预设值
 		selectDate: '2020-10-16',
 	},
