@@ -39,7 +39,7 @@
 						<view 
 							wx:if="{{item.tip.type === 'text'}}"
 							class="calendar-data-text-tip line-1"
-							style="color: {{item.tip.color || '#333333'}}">{{item.tip.text}}</view>
+							style="color: {{item.tip.color || '#999999'}}">{{item.tip.text}}</view>
 						<view 
 							wx:if="{{item.tip.type === 'tag'}}"
 							class="calendar-data-tag-tip"

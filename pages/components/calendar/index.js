@@ -1,5 +1,7 @@
 // pages/components/calendar/index.js
 import dateUtil from "dateUtil.js"
+import holiday from "holiday.js"
+
 const DAY_TYPE = ['last', 'cur', 'next'] //类型，分为上月，本月和下个月
 const DATE_TYPE = ['between', 'select', 'unSelect']
 let preHeight = 999
@@ -31,7 +33,11 @@ Component({
 			type: Object,
 			value: {
 				begin: '',
-				end: ''
+				end: '',
+				
+				// 新增开始结束文案
+				beginText: '开始',
+				endText: '结束'
 			}
 		},
 		// 仅当设置为选择日期范围类型生效,  设置范围天数  
@@ -109,6 +115,12 @@ Component({
 		animated: {
 			type: Boolean,
 			value: true
+		},
+		
+		// 是否显示相关的节假日
+		showHoliday: {
+			type: Boolean,
+			value: false
 		}
 	},
 
@@ -166,8 +178,6 @@ Component({
 		// 计算完成
 		this.setData({
 			['calendarInfo.cur']: this.data.calendarInfo.cur,
-		}, () => {
-			console.log('输出日期', this.data.calendarInfo)
 		})
 	},
 
@@ -545,6 +555,10 @@ Component({
 
 		//	格式化显示的文字
 		formatShowTip(date) {
+			// 判断是否显示相关的节假日
+			if(this.properties.showHoliday) {
+				this.formatHolidayTip(date)
+			}
 			// 循环遍历找出对应的要显示的文字日期
 			this.properties.dateText.forEach((item, index) => {
 				date.list.forEach((arr, temp) => {
@@ -555,7 +569,34 @@ Component({
 				})
 			})
 		},
-
+		// 格式化节假日标签
+		formatHolidayTip(date) {
+			holiday.holidayList.forEach((item, index) => {
+				date.list.forEach((arr, temp) => {
+					// 判断月日是否一致   显示上下月残余的提示文案
+					let value
+					switch(arr.type) {
+						case 'last': 
+							value = (date.month - 1 > 0 ? date.month - 1 : 12) + '-' + arr.value
+							break;
+						case 'cur':
+							value = date.month + '-' + arr.value
+							break;
+						case 'next':
+							value = (date.month + 1 > 12 ? 1 : date.month + 1) + '-' + arr.value
+							break;
+					}
+					if (item.value === value) {
+						arr.tip = {
+							...item,
+							color: arr.type === 'cur' ? 'red' : '',
+							type: 'text'
+						}
+					}
+				})
+			})
+		},
+		
 		// 点击显示下一月
 		showNextMonth() {
 			preHeight = this.data.calendarInfo[DAY_TYPE[this.data.showCalendarIndex]].swiperHeight

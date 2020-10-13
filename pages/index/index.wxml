@@ -19,7 +19,7 @@
 		round
 		show="{{ show }}" bind:close="onClose" position="bottom">
 		<calendar 
-			fixRow="{{ false }}" title="选择团期" showRemnantDays="{{ false }}"
+			fixRow="{{ false }}" title="选择团期" showRemnantDays="{{ false }}" showHoliday="{{ true }}"
 			selectDate="{{selectDate}}" dateText="{{showDataText}}" bind:finishSelectDate="finishSelectDate"></calendar>
 	</van-popup>
 	<!-- 多选弹框 -->
@@ -28,7 +28,7 @@
 		show="{{ showMultiple }}" bind:close="onClose" position="bottom">
 		<calendar 
 			fixRow="{{ true }}" title="选择团期" calendarType="multiple" btnText="立即下单"
-			selectDateMultiple="{{selectDateMultiple}}" beginTime="2020-01-01" 
+			selectDateMultiple="{{selectDateMultiple}}" beginTime="2020-01-01" showHoliday="{{true}}"
 			dateText="{{showDataText}}" bind:finishSelectDate="finishSelectDate"></calendar>
 	</van-popup>
 	<!-- 范围选择弹框 -->
